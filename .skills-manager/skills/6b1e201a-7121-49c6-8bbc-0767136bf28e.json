@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "skill_id": "6b1e201a-7121-49c6-8bbc-0767136bf28e",
+  "path": "html-to-ppt",
+  "path_key": "html-to-ppt",
+  "enabled": true,
+  "tags": [],
+  "source": {
+    "type": "skillssh",
+    "ref": "claude-office-skills/skills/html-to-ppt",
+    "subpath": "html-to-ppt",
+    "branch": null
+  }
+}
