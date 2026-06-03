@@ -2,13 +2,14 @@
   "schema_version": 1,
   "scenario_id": "aac325d0-83d2-476a-865e-156518b4a224",
   "skill_id": "85a26c88-c818-4a21-8f20-55c739546cda",
-  "sort_order": 2,
+  "sort_order": 3,
   "tools": {
     "claude_code": true,
     "codex": true,
     "cursor": true,
     "hermes": true,
     "qoder": true,
-    "warp": true
+    "warp": true,
+    "workbuddy": true
   }
 }
