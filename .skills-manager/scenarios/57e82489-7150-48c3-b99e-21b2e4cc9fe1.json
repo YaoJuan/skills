@@ -1,0 +1,8 @@
+{
+  "schema_version": 1,
+  "scenario_id": "57e82489-7150-48c3-b99e-21b2e4cc9fe1",
+  "name": "ppt制作",
+  "description": "ppt handler",
+  "icon": "book-open",
+  "sort_order": 999
+}
