@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720">
+  <rect x="0" y="0" width="640" height="720" fill="#0A0A0A"/>
+  <rect x="640" y="0" width="640" height="720" fill="#002FA7"/>
+  <g id="brand-chrome-dark">
+    <image href="images/logo.png" x="64" y="40" width="44" height="44" preserveAspectRatio="xMidYMid meet"/>
+    <text x="120" y="62" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="14" font-weight="600" fill="#FAFAF8">{{COMPANY_NAME}}</text>
+    <text x="120" y="80" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="11" fill="#94A3B8">{{COMPANY_TAGLINE}}</text>
+  </g>
+  <g id="brand-chrome-accent">
+    <image href="images/logo-mono-white.png" x="688" y="44" width="40" height="40" preserveAspectRatio="xMidYMid meet"/>
+    <text x="736" y="64" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="14" font-weight="600" fill="#FFFFFF">{{COMPANY_NAME}}</text>
+  </g>
+  <text x="64" y="220" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="48" font-weight="200" fill="#FAFAF8">{{TITLE}}</text>
+  <text x="64" y="280" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="22" font-weight="300" fill="#FAFAF8" opacity="0.82">{{SUBTITLE}}</text>
+  <text x="688" y="200" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="18" fill="#FFFFFF">{{TAKEAWAY1}}</text>
+  <text x="688" y="280" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="18" fill="#FFFFFF">{{TAKEAWAY2}}</text>
+  <text x="688" y="360" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="18" fill="#FFFFFF">{{TAKEAWAY3}}</text>
+  <text x="64" y="660" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="13" fill="#737373">{{FOOTER}}</text>
+</svg>

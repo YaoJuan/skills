@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720">
+  <rect width="1280" height="720" fill="#0A0A0A"/>
+  <g id="brand-chrome">
+    <image href="images/logo.png" x="64" y="32" width="40" height="40" preserveAspectRatio="xMidYMid meet"/>
+    <text x="116" y="54" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="14" font-weight="600" fill="#FAFAF8">{{COMPANY_NAME}}</text>
+    <text x="116" y="72" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="11" fill="#94A3B8">{{COMPANY_TAGLINE}}</text>
+  </g>
+  <text x="1216" y="100" font-family="Arial, Helvetica, sans-serif" font-size="13" fill="#737373" text-anchor="end">{{PAGE_NUM}}</text>
+  <text x="64" y="132" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="13" fill="#737373">{{SECTION_LABEL}}</text>
+  <rect x="64" y="152" width="80" height="3" fill="#002FA7"/>
+  <text x="64" y="188" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="32" font-weight="200" fill="#FAFAF8">{{PAGE_TITLE}}</text>
+  <!-- row1 -->
+  <rect x="64" y="216" width="368" height="224" rx="4" fill="#1A1A1A" stroke="#525252" stroke-width="1"/>
+  <text x="408" y="244" font-family="Arial, Helvetica, sans-serif" font-size="12" fill="#737373" text-anchor="end">{{CELL1_NB}}</text>
+  <g transform="translate(88,260)" stroke="#FAFAF8" stroke-width="1.5" fill="none" opacity="0.85"><rect x="2" y="2" width="32" height="24" rx="2"/><path d="M10 30h16"/></g>
+  <text x="88" y="318" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="18" font-weight="500" fill="#FAFAF8">{{CELL1_TITLE}}</text>
+  <text x="88" y="354" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="15" fill="#94A3B8">{{CELL1_DESC_L1}}</text>
+  <text x="88" y="382" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="15" fill="#94A3B8">{{CELL1_DESC_L2}}</text>
+  <rect x="456" y="216" width="368" height="224" rx="4" fill="#1A1A1A" stroke="#525252" stroke-width="1"/>
+  <text x="800" y="244" font-family="Arial, Helvetica, sans-serif" font-size="12" fill="#737373" text-anchor="end">{{CELL2_NB}}</text>
+  <g transform="translate(480,260)" stroke="#FAFAF8" stroke-width="1.5" fill="none" opacity="0.85"><rect x="4" y="4" width="28" height="22" rx="2"/><circle cx="12" cy="12" r="3"/></g>
+  <text x="480" y="318" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="18" font-weight="500" fill="#FAFAF8">{{CELL2_TITLE}}</text>
+  <text x="480" y="354" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="15" fill="#94A3B8">{{CELL2_DESC_L1}}</text>
+  <text x="480" y="382" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="15" fill="#94A3B8">{{CELL2_DESC_L2}}</text>
+  <rect x="848" y="216" width="368" height="224" rx="4" fill="#1A1A1A" stroke="#525252" stroke-width="1"/>
+  <text x="1192" y="244" font-family="Arial, Helvetica, sans-serif" font-size="12" fill="#737373" text-anchor="end">{{CELL3_NB}}</text>
+  <g transform="translate(872,262)" stroke="#FAFAF8" stroke-width="1.5" fill="none" opacity="0.85"><path d="M4 8h32v20H4z"/><path d="M12 4v8M24 4v8"/></g>
+  <text x="872" y="318" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="18" font-weight="500" fill="#FAFAF8">{{CELL3_TITLE}}</text>
+  <text x="872" y="354" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="15" fill="#94A3B8">{{CELL3_DESC_L1}}</text>
+  <text x="872" y="382" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="15" fill="#94A3B8">{{CELL3_DESC_L2}}</text>
+  <!-- row2 -->
+  <rect x="64" y="456" width="368" height="224" rx="4" fill="#1A1A1A" stroke="#525252" stroke-width="1"/>
+  <text x="408" y="484" font-family="Arial, Helvetica, sans-serif" font-size="12" fill="#737373" text-anchor="end">{{CELL4_NB}}</text>
+  <g transform="translate(88,500)" stroke="#FAFAF8" stroke-width="1.5" fill="none" opacity="0.85"><circle cx="18" cy="18" r="14"/><path d="M18 10v8l6 4"/></g>
+  <text x="88" y="558" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="18" font-weight="500" fill="#FAFAF8">{{CELL4_TITLE}}</text>
+  <text x="88" y="594" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="15" fill="#94A3B8">{{CELL4_DESC_L1}}</text>
+  <text x="88" y="622" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="15" fill="#94A3B8">{{CELL4_DESC_L2}}</text>
+  <rect x="456" y="456" width="368" height="224" rx="4" fill="#002FA7"/>
+  <text x="800" y="484" font-family="Arial, Helvetica, sans-serif" font-size="12" fill="#FFFFFF" opacity="0.75" text-anchor="end">{{CELL5_NB}}</text>
+  <g transform="translate(480,500)" stroke="#FFFFFF" stroke-width="1.5" fill="none" opacity="0.95"><path d="M18 6l10 6v12l-10 6L8 24V12z"/><path d="M14 18l8-5"/></g>
+  <text x="480" y="558" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="18" font-weight="500" fill="#FFFFFF">{{CELL5_TITLE}}</text>
+  <text x="480" y="594" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="15" fill="#FFFFFF" opacity="0.9">{{CELL5_DESC_L1}}</text>
+  <text x="480" y="622" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="15" fill="#FFFFFF" opacity="0.9">{{CELL5_DESC_L2}}</text>
+  <rect x="848" y="456" width="368" height="224" rx="4" fill="#1A1A1A" stroke="#525252" stroke-width="1"/>
+  <text x="1192" y="484" font-family="Arial, Helvetica, sans-serif" font-size="12" fill="#737373" text-anchor="end">{{CELL6_NB}}</text>
+  <g transform="translate(872,502)" stroke="#FAFAF8" stroke-width="1.5" fill="none" opacity="0.85"><path d="M6 18h28l-8-10H14z"/><path d="M18 18v8"/></g>
+  <text x="872" y="558" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="18" font-weight="500" fill="#FAFAF8">{{CELL6_TITLE}}</text>
+  <text x="872" y="594" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="15" fill="#94A3B8">{{CELL6_DESC_L1}}</text>
+  <text x="872" y="622" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="15" fill="#94A3B8">{{CELL6_DESC_L2}}</text>
+</svg>

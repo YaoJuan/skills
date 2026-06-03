@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720">
+  <defs>
+    <marker id="flow-arrow" markerWidth="10" markerHeight="10" refX="9" refY="5" orient="auto">
+      <path d="M0,0 L10,5 L0,10 Z" fill="#002FA7"/>
+    </marker>
+  </defs>
+  <rect width="1280" height="720" fill="#FAFAF8"/>
+  <g id="brand-chrome">
+    <image href="images/logo.png" x="64" y="34" width="36" height="36" preserveAspectRatio="xMidYMid meet"/>
+    <text x="108" y="54" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="14" font-weight="600" fill="#0A0A0A">{{COMPANY_NAME}}</text>
+    <text x="108" y="72" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="11" fill="#737373">{{COMPANY_TAGLINE}}</text>
+  </g>
+  <text x="1216" y="100" font-family="Arial, Helvetica, sans-serif" font-size="13" fill="#737373" text-anchor="end">{{PAGE_NUM}}</text>
+  <text x="64" y="132" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="13" fill="#525252">{{SECTION_LABEL}}</text>
+  <rect x="64" y="152" width="80" height="3" fill="#002FA7"/>
+  <text x="64" y="188" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="32" font-weight="200" fill="#0A0A0A">{{PAGE_TITLE}}</text>
+  <!-- spine: gray solid lines, blue arrowheads only -->
+  <line x1="176" y1="400" x2="1040" y2="400" stroke="#D4D4D4" stroke-width="2"/>
+  <line x1="176" y1="400" x2="392" y2="400" stroke="#737373" stroke-width="2" marker-end="url(#flow-arrow)"/>
+  <line x1="392" y1="400" x2="608" y2="400" stroke="#737373" stroke-width="2" marker-end="url(#flow-arrow)"/>
+  <line x1="608" y1="400" x2="824" y2="400" stroke="#737373" stroke-width="2" marker-end="url(#flow-arrow)"/>
+  <line x1="824" y1="400" x2="1040" y2="400" stroke="#737373" stroke-width="2" marker-end="url(#flow-arrow)"/>
+  <!-- step 1 · up -->
+  <text x="176" y="312" font-family="Arial, Helvetica, sans-serif" font-size="12" fill="#737373" text-anchor="middle">{{STEP1_NUM}}</text>
+  <text x="176" y="344" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="16" font-weight="400" fill="#0A0A0A" text-anchor="middle">{{STEP1_NAME}}</text>
+  <line x1="176" y1="368" x2="176" y2="392" stroke="#A3A3A3" stroke-width="1.5"/>
+  <circle cx="176" cy="400" r="10" fill="#0A0A0A" stroke="#FAFAF8" stroke-width="2"/>
+  <!-- step 2 · down -->
+  <circle cx="392" cy="400" r="10" fill="#0A0A0A" stroke="#FAFAF8" stroke-width="2"/>
+  <line x1="392" y1="412" x2="392" y2="436" stroke="#A3A3A3" stroke-width="1.5"/>
+  <text x="392" y="460" font-family="Arial, Helvetica, sans-serif" font-size="12" fill="#737373" text-anchor="middle">{{STEP2_NUM}}</text>
+  <text x="392" y="492" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="16" font-weight="400" fill="#0A0A0A" text-anchor="middle">{{STEP2_NAME}}</text>
+  <!-- step 3 · up -->
+  <text x="608" y="312" font-family="Arial, Helvetica, sans-serif" font-size="12" fill="#737373" text-anchor="middle">{{STEP3_NUM}}</text>
+  <text x="608" y="344" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="16" font-weight="400" fill="#0A0A0A" text-anchor="middle">{{STEP3_NAME}}</text>
+  <line x1="608" y1="368" x2="608" y2="392" stroke="#A3A3A3" stroke-width="1.5"/>
+  <circle cx="608" cy="400" r="10" fill="#0A0A0A" stroke="#FAFAF8" stroke-width="2"/>
+  <!-- step 4 · down -->
+  <circle cx="824" cy="400" r="10" fill="#0A0A0A" stroke="#FAFAF8" stroke-width="2"/>
+  <line x1="824" y1="412" x2="824" y2="436" stroke="#A3A3A3" stroke-width="1.5"/>
+  <text x="824" y="460" font-family="Arial, Helvetica, sans-serif" font-size="12" fill="#737373" text-anchor="middle">{{STEP4_NUM}}</text>
+  <text x="824" y="492" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="16" font-weight="400" fill="#0A0A0A" text-anchor="middle">{{STEP4_NAME}}</text>
+  <!-- step 5 · up -->
+  <text x="1040" y="312" font-family="Arial, Helvetica, sans-serif" font-size="12" fill="#737373" text-anchor="middle">{{STEP5_NUM}}</text>
+  <text x="1040" y="344" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="16" font-weight="400" fill="#0A0A0A" text-anchor="middle">{{STEP5_NAME}}</text>
+  <line x1="1040" y1="368" x2="1040" y2="392" stroke="#A3A3A3" stroke-width="1.5"/>
+  <circle cx="1040" cy="400" r="10" fill="#0A0A0A" stroke="#FAFAF8" stroke-width="2"/>
+  <text x="640" y="672" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="13" fill="#737373" text-anchor="middle">{{FOOTER_HINT}}</text>
+</svg>

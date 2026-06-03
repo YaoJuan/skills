@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720">
+  <rect width="1280" height="720" fill="#FAFAF8"/>
+  <g id="brand-chrome">
+    <image href="images/logo.png" x="64" y="34" width="36" height="36" preserveAspectRatio="xMidYMid meet"/>
+    <text x="108" y="54" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="14" font-weight="600" fill="#0A0A0A">{{COMPANY_NAME}}</text>
+    <text x="108" y="72" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="11" fill="#737373">{{COMPANY_TAGLINE}}</text>
+  </g>
+  <text x="1216" y="100" font-family="Arial, sans-serif" font-size="13" fill="#737373" text-anchor="end">{{PAGE_NUM}}</text>
+  <text x="64" y="144" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="13" fill="#525252">{{SECTION_LABEL}}</text>
+  <text x="64" y="188" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="34" font-weight="200" fill="#0A0A0A">{{PAGE_TITLE}}</text>
+  <line x1="120" y1="400" x2="1160" y2="400" stroke="#E0E0E0" stroke-width="3"/>
+  <circle cx="200" cy="400" r="28" fill="#002FA7"/>
+  <text x="200" y="356" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="18" font-weight="500" fill="#002FA7" text-anchor="middle">{{PHASE1}}</text>
+  <text x="200" y="480" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="13" fill="#525252" text-anchor="middle">{{PHASE1_DATE_L1}}</text>
+  <text x="200" y="504" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="13" fill="#525252" text-anchor="middle">{{PHASE1_DATE_L2}}</text>
+  <circle cx="640" cy="400" r="28" fill="#002FA7"/>
+  <text x="640" y="356" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="18" font-weight="500" fill="#002FA7" text-anchor="middle">{{PHASE2}}</text>
+  <text x="640" y="480" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="13" fill="#525252" text-anchor="middle">{{PHASE2_DATE_L1}}</text>
+  <text x="640" y="504" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="13" fill="#525252" text-anchor="middle">{{PHASE2_DATE_L2}}</text>
+  <circle cx="1080" cy="400" r="28" fill="#FFFFFF" stroke="#737373" stroke-width="3"/>
+  <text x="1080" y="356" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="18" font-weight="500" fill="#737373" text-anchor="middle">{{PHASE3}}</text>
+  <text x="1080" y="480" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="13" fill="#525252" text-anchor="middle">{{PHASE3_DATE_L1}}</text>
+  <text x="1080" y="504" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="13" fill="#525252" text-anchor="middle">{{PHASE3_DATE_L2}}</text>
+  <text x="64" y="580" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="14" fill="#525252">{{FOOTER_HINT}}</text>
+</svg>
