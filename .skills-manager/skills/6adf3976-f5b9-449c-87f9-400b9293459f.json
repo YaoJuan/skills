@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "skill_id": "6adf3976-f5b9-449c-87f9-400b9293459f",
+  "path": "riverpod-v3",
+  "path_key": "riverpod-v3",
+  "enabled": true,
+  "tags": [],
+  "source": {
+    "type": "import",
+    "ref": null,
+    "subpath": null,
+    "branch": null
+  }
+}
