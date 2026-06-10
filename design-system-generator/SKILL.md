@@ -8,7 +8,7 @@ description: >
   "extract design from this screenshot/mockup", "my project doesn't have a DESIGN.md",
   "create design guidelines for my app", "design tokens", "UI style guide", any mention of DESIGN.md or design system,
   or when the user uploads a UI screenshot and wants design rules extracted from it.
-  Supports WeChat Mini Program, Android App, and Web platforms.
+  Supports WeChat Mini Program, Android App, iOS App, and Web platforms.
 ---
 
 # Design System Generator
@@ -37,6 +37,7 @@ Ask or infer the target platform. Then load the corresponding reference file for
 |----------|---------------|-----------------|
 | WeChat Mini Program | `references/miniprogram.md` | rpx units, WeUI components, safe areas, no custom fonts |
 | Android App | `references/android.md` | Material You, dp/sp units, touch targets ≥48dp |
+| iOS App | `references/ios.md` | SF Pro, pt units, Dynamic Type, SF Symbols, safe areas |
 | Web (admin/dashboard) | `references/web.md` | px/rem, responsive breakpoints, Tailwind-friendly tokens |
 
 If the user mentions multiple platforms, generate separate DESIGN.md files for each.
@@ -127,5 +128,6 @@ If the user wants to update an existing DESIGN.md:
 ## Reference Files
 
 - `references/miniprogram.md` — WeChat Mini Program specific structure and constraints
-- `references/android.md` — Android App (Material You) structure and constraints  
+- `references/android.md` — Android App (Material You) structure and constraints
+- `references/ios.md` — iOS App (SwiftUI/UIKit, SF Pro, Dynamic Type) structure and constraints
 - `references/web.md` — Web admin/dashboard structure and constraints
