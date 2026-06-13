@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "skill_id": "2bb4bc1f-d853-4478-9dc4-85195f69cc26",
+  "path": "codeup-pr-review-2",
+  "path_key": "codeup-pr-review-2",
+  "enabled": true,
+  "tags": [],
+  "source": {
+    "type": "local",
+    "ref": null,
+    "subpath": null,
+    "branch": null
+  }
+}
