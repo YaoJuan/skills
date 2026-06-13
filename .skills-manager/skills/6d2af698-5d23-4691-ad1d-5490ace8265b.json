@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "skill_id": "6d2af698-5d23-4691-ad1d-5490ace8265b",
+  "path": "prd-writer",
+  "path_key": "prd-writer",
+  "enabled": true,
+  "tags": [],
+  "source": {
+    "type": "git",
+    "ref": "git@github.com:chituai/prd-writer.git",
+    "subpath": null,
+    "branch": null
+  }
+}
