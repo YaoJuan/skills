@@ -2,7 +2,16 @@ import os
 import sys
 import re
 import argparse
+from pathlib import Path
 from xml.etree import ElementTree as ET
+
+_SCRIPTS_DIR = Path(__file__).resolve().parents[1]
+if str(_SCRIPTS_DIR) not in sys.path:
+    sys.path.insert(0, str(_SCRIPTS_DIR))
+
+from console_encoding import configure_utf8_stdio  # noqa: E402
+
+configure_utf8_stdio()
 
 
 SVG_NS = "http://www.w3.org/2000/svg"
@@ -186,6 +195,15 @@ DY_TOLERANCE_PX = 0.5
 # Cap on dy / base ratio. Anything beyond this (e.g. a 5x gap) is rejected
 # as a real section break that shouldn't merge into one text frame.
 MAX_DY_MULTIPLIER = 3.0
+LIST_MARKER_RE = re.compile(
+    r"^\s*(?:[•·・]\s*|[-–—*]\s+|\d+[.)、]\s+|[（(]\d+[）)]\s*)\S+"
+)
+
+
+def _starts_with_list_marker(line_group: list[ET.Element]) -> bool:
+    """Return True when a visual line starts with an ordered/unordered marker."""
+    text = "".join(collect_text_content(tspan) for tspan in line_group)
+    return bool(LIST_MARKER_RE.match(text))
 
 
 def _tspan_has_positional_descendant(tspan: ET.Element) -> bool:
@@ -201,16 +219,58 @@ def _tspan_has_positional_descendant(tspan: ET.Element) -> bool:
     return False
 
 
+def _build_paragraph_child_view(
+    text_el: ET.Element,
+    is_svg_tag,
+) -> tuple[list[ET.Element], ET.Element | None] | None:
+    """Return direct tspan children plus an optional synthetic leading line.
+
+    The synthetic line lets paragraph classification accept common SVG
+    authoring where the first visual line is direct text under <text>. This
+    helper does not mutate the tree; _emit_mergeable_paragraph commits the
+    synthetic line only after all paragraph checks pass.
+    """
+    direct_children = list(text_el)
+    direct_tspans = [c for c in direct_children if is_svg_tag(c, "tspan")]
+    if len(direct_tspans) != len(direct_children):
+        return None
+
+    raw_lead = text_el.text or ""
+    synthetic_first: ET.Element | None = None
+    if raw_lead.strip():
+        base_x_raw = get_attr(text_el, "x")
+        if base_x_raw is None:
+            return None
+        if any((child.tail or "").strip() for child in direct_tspans):
+            return None
+        synthetic_first = ET.Element(f"{{{SVG_NS}}}tspan")
+        synthetic_first.set("x", base_x_raw)
+        synthetic_first.text = raw_lead.lstrip()
+
+    view = ([synthetic_first] if synthetic_first is not None else []) + direct_tspans
+    return view, synthetic_first
+
+
+def _get_font_size_px(elem: ET.Element) -> float | None:
+    """Read font-size from an attribute or inline style."""
+    size = parse_first_number(get_attr(elem, "font-size"))
+    if size is not None:
+        return size
+    style_size = parse_style(get_attr(elem, "style")).get("font-size")
+    return parse_first_number(style_size)
+
+
 def _classify_paragraph_block(
     text_el: ET.Element,
     is_svg_tag,
     is_new_line_tspan,
-) -> tuple[float, list[float], list[bool]] | None:
+) -> tuple[float, list[float], list[bool], list[list[ET.Element]], ET.Element | None] | None:
     """Detect a mergeable paragraph block.
 
     Returns ``(base_line_height_px, extra_space_before_px_per_line,
-    is_soft_break_per_line)`` if the children form a mergeable paragraph.
-    Each list has one entry per direct-child tspan (line):
+    is_soft_break_per_line, line_groups, synthetic_first_line)`` if the children
+    form a mergeable paragraph. Each list has one entry per direct-child tspan
+    (line), including a synthetic first line when the source used leading text:
 
       - extra_space_before_px_per_line[i]: extra px above base line-height,
         used as <a:spcBef> on the downstream <a:p>. First entry is 0.
@@ -219,9 +279,12 @@ def _classify_paragraph_block(
         a fresh <a:p>. First entry is always False (paragraph head).
 
     Conditions (all must hold):
-      - No leading text directly under <text>.
+      - No direct text under <text>, except simple leading text that can be
+        promoted into a synthetic first-line <tspan>.
       - Every direct child is a <tspan>.
-      - Every direct-child tspan is a new-line tspan.
+      - Every logical line starts with a new-line tspan.
+      - Direct-child inline formatting tspans without x/y/dy are allowed only
+        after a line starts; they are normalized into the previous line.
       - First line-break tspan has dy == 0 (or no dy).
       - All subsequent line-break tspans use positive dy (no <y>).
       - dy values cluster around a single minimum "base line-height";
@@ -231,21 +294,32 @@ def _classify_paragraph_block(
       - No nested tspan inside any line carries x/y/dy.
     """
     base_x = parse_first_number(get_attr(text_el, "x"))
-    if (text_el.text or "").strip():
+    child_view = _build_paragraph_child_view(text_el, is_svg_tag)
+    if child_view is None:
         return None
+    direct_tspans, synthetic_first = child_view
 
-    direct_tspans = [c for c in list(text_el) if is_svg_tag(c, "tspan")]
-    direct_children_all = [c for c in list(text_el)]
     if len(direct_tspans) < 2:
         return None
-    if len(direct_tspans) != len(direct_children_all):
+
+    line_groups: list[list[ET.Element]] = []
+    for tspan in direct_tspans:
+        if is_new_line_tspan(tspan):
+            line_groups.append([tspan])
+        else:
+            if not line_groups:
+                return None
+            if _tspan_has_positional_descendant(tspan):
+                return None
+            line_groups[-1].append(tspan)
+
+    if len(line_groups) < 2:
         return None
 
     # First pass: validate per-line structural rules and collect dy values.
     dy_values: list[float] = []  # one per line (0 for first)
-    for idx, tspan in enumerate(direct_tspans):
-        if not is_new_line_tspan(tspan):
-            return None
+    for idx, group in enumerate(line_groups):
+        tspan = group[0]
 
         t_y = get_attr(tspan, "y")
         if t_y is not None:
@@ -278,10 +352,13 @@ def _classify_paragraph_block(
     if not positive_dys:
         return None
     base = min(positive_dys)
+    font_size = _get_font_size_px(text_el)
+    if font_size is not None and base > font_size * MAX_DY_MULTIPLIER + DY_TOLERANCE_PX:
+        return None
 
     extras: list[float] = [0.0]  # first line never has space-before
     soft_breaks: list[bool] = [False]  # first line starts a paragraph
-    for d in dy_values[1:]:
+    for idx, d in enumerate(dy_values[1:], start=1):
         if d + DY_TOLERANCE_PX < base:
             return None  # below base — line overlap, not a paragraph
         if d > base * MAX_DY_MULTIPLIER + DY_TOLERANCE_PX:
@@ -290,12 +367,17 @@ def _classify_paragraph_block(
         if extra < 0:
             extra = 0.0
         # dy at the base line-height = soft break (SVG was simulating wrap);
-        # dy strictly greater than base = hard paragraph break.
-        is_soft = abs(extra) <= DY_TOLERANCE_PX
+        # dy strictly greater than base = hard paragraph break. List markers
+        # also start a fresh paragraph so bullet/ordered items do not merge
+        # into the previous item when exported to PowerPoint.
+        is_soft = (
+            abs(extra) <= DY_TOLERANCE_PX
+            and not _starts_with_list_marker(line_groups[idx])
+        )
         extras.append(0.0 if is_soft else extra)
         soft_breaks.append(is_soft)
 
-    return base, extras, soft_breaks
+    return base, extras, soft_breaks, line_groups, synthetic_first
 
 
 def _emit_mergeable_paragraph(
@@ -303,6 +385,8 @@ def _emit_mergeable_paragraph(
     base_dy: float,
     extras: list[float],
     soft_breaks: list[bool],
+    line_groups: list[list[ET.Element]],
+    synthetic_first: ET.Element | None = None,
 ) -> None:
     """Rewrite text_el in place so it stays a single <text> with paragraph rows.
 
@@ -315,12 +399,34 @@ def _emit_mergeable_paragraph(
         with an extra gap (omitted when 0)
     """
     text_el.set(PARAGRAPH_MARK_ATTR, format_number(base_dy))
+    if synthetic_first is not None:
+        text_el.text = None
+        text_el.insert(0, synthetic_first)
+
+    # Normalize authoring variants before the downstream converter reads the
+    # paragraph: a line-break tspan may be followed by direct-child inline
+    # formatting tspans. Move those inline runs under the line-break tspan so
+    # every direct child of <text> is one logical visual line.
+    normalized_lines: list[ET.Element] = []
+    for group in line_groups:
+        line = group[0]
+        for inline_tspan in group[1:]:
+            try:
+                text_el.remove(inline_tspan)
+            except ValueError:
+                pass
+            if inline_tspan.tail and not inline_tspan.tail.strip():
+                inline_tspan.tail = None
+            line.append(inline_tspan)
+        normalized_lines.append(line)
+
+    for child in list(text_el):
+        if child not in normalized_lines:
+            text_el.remove(child)
 
     extras_iter = iter(extras)
     soft_iter = iter(soft_breaks)
-    for tspan in list(text_el):
-        if tspan.tag != f"{{{SVG_NS}}}tspan":
-            continue
+    for tspan in normalized_lines:
         for k in ("x", "y", "dy"):
             if k in tspan.attrib:
                 del tspan.attrib[k]
@@ -408,8 +514,15 @@ def flatten_text_with_tspans(
         if merge_paragraphs:
             paragraph = _classify_paragraph_block(text_el, is_svg_tag, is_new_line_tspan)
             if paragraph is not None:
-                base_dy, extras, soft_breaks = paragraph
-                _emit_mergeable_paragraph(text_el, base_dy, extras, soft_breaks)
+                base_dy, extras, soft_breaks, line_groups, synthetic_first = paragraph
+                _emit_mergeable_paragraph(
+                    text_el,
+                    base_dy,
+                    extras,
+                    soft_breaks,
+                    line_groups,
+                    synthetic_first=synthetic_first,
+                )
                 changed = True
                 continue
 

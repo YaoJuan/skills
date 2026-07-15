@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "skill_id": "4f1800d6-073e-4242-a65f-f716d60044ad",
+  "path": "tech-resume-optimizer",
+  "path_key": "tech-resume-optimizer",
+  "enabled": true,
+  "tags": [],
+  "source": {
+    "type": "skillssh",
+    "ref": "paramchoudhary/resumeskills/tech-resume-optimizer",
+    "subpath": "skills/tech-resume-optimizer",
+    "branch": null
+  }
+}
