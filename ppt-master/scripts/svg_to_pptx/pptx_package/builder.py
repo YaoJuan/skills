@@ -2075,7 +2075,7 @@ def _shape_bounds_emu(
     if xfrm is None:
         raise TemplateStructureError(
             "Placeholder shape has no directly readable DrawingML transform; "
-            "set data-pptx-placeholder-bounds"
+            "set data-pptx-bounds"
         )
     off = xfrm.find(f"{{{DML_NS}}}off")
     ext = xfrm.find(f"{{{DML_NS}}}ext")
@@ -2309,8 +2309,14 @@ def _placeholder_text_body(
         if source_body_pr is not None
         else ET.Element(f"{{{DML_NS}}}bodyPr")
     )
-    source_bounds = _shape_bounds_emu(source_shape, None)
     target_bounds = _shape_bounds_emu(source_shape, item.placeholder_bounds)
+    try:
+        source_bounds = _shape_bounds_emu(source_shape, None)
+    except TemplateStructureError:
+        # Composite proxy content may compile to p:grpSp, whose transform is
+        # intentionally not reused for the Layout's synthetic p:sp carrier.
+        # The explicit design-zone bounds remain the authoritative frame.
+        source_bounds = target_bounds
     _normalize_placeholder_body_properties(
         body_pr,
         source_bounds,
@@ -2705,6 +2711,7 @@ def _apply_explicit_layout_structure(
             master_part,
             base_layout_part,
             prototype.layout_name,
+            show_master_shapes=prototype.layout_show_master_shapes,
         )
         layout_path = extract_dir / layout_part
         layout_rels_path = _relationships_path_for_part(extract_dir, layout_part)
@@ -2793,6 +2800,10 @@ def _apply_explicit_layout_structure(
     )
     expected_backgrounds.update(slide_backgrounds)
     for state in states:
+        state.root.set(
+            "showMasterSp",
+            "1" if state.spec.slide_show_inherited_shapes else "0",
+        )
         _write_xml_tree(state.slide_path, state.tree)
         expected_backgrounds.setdefault(
             f"ppt/slides/slide{state.spec.slide_num}.xml",
@@ -4519,7 +4530,7 @@ def create_pptx_with_native_svg(
             ``preserve`` mode.
         theme_font_spec: Locked project major/minor fonts for flat/structured
             release-theme inheritance. Direct diagnostic flat callers may omit it.
-        master_text_style_spec: Required locked title/body sizes for structured
+        master_text_style_spec: Required declared title/body anchors for structured
             and release flat slide-master text styles. Direct diagnostic flat
             callers may omit it; other routes ignore this value.
         theme_color_spec: Locked project color scheme for context-aware
@@ -4594,7 +4605,7 @@ def create_pptx_with_native_svg(
         )
     if pptx_structure == "structured" and master_text_style_spec is None:
         raise ValueError(
-            "Structured export requires locked typography title/body sizes "
+            "Structured export requires declared typography title/body anchors "
             "in master_text_style_spec"
         )
     if use_native_shapes and pptx_structure == "structured":
@@ -4810,6 +4821,12 @@ def create_pptx_with_native_svg(
         for i, svg_path in enumerate(svg_files, 1):
             slide_num = i
             is_layout_definition = slide_num > public_slide_count
+            progress_label = (
+                f"[Layout definition {slide_num - public_slide_count}/"
+                f"{len(definition_svg_files)}]"
+                if is_layout_definition
+                else f"[Slide {slide_num}/{public_slide_count}]"
+            )
             expected_animation_targets: list[tuple[int, int, str, float]] = []
             expected_animation_duration = animation_duration
             expected_animation_trigger = normalize_animation_trigger(animation_trigger)
@@ -5240,19 +5257,18 @@ def create_pptx_with_native_svg(
                     has_notes = slide_num in notes_slides_created
                     notes_str = " +notes" if has_notes else ""
                     narration_str = " +narration" if slide_num in narration_slides_created else ""
-                    definition_str = (
-                        " [Layout definition]" if is_layout_definition else ""
-                    )
                     print(
-                        f"  [{i}/{len(svg_files)}] {svg_path.name}{mode_str}"
-                        f"{notes_str}{narration_str}{definition_str}"
+                        f"  {progress_label} {svg_path.name}{mode_str}"
+                        f"{notes_str}{narration_str}"
                     )
 
                 success_count += 1
 
             except Exception as e:
                 if verbose:
-                    print(f"  [{i}/{len(svg_files)}] {svg_path.name} - Error: {e}")
+                    print(
+                        f"  {progress_label} {svg_path.name} - Error: {e}"
+                    )
                 if use_native_shapes:
                     raise
 

@@ -1,8 +1,8 @@
 # Page Transitions & Per-Element Animations
 
-PPT Master's exported PPTX supports **page transitions** and **per-element
-entrance animations** as real PowerPoint OOXML. Other applications may
-interpret timing differently; this contract makes no unconditional Keynote guarantee.
+Execution contract for generated-PPTX **page transitions** and **per-element
+entrance animations**. This file owns defaults, sidecar semantics, anchor
+selection, validation, and package read-back.
 
 ## 1. Defaults
 
@@ -19,7 +19,7 @@ To regenerate a deck with different settings, rerun `svg_to_pptx.py` against the
 
 Per-element animation is off by default. To enable it deck-wide, pass `-a auto` at export (no config needed). When a deck instead needs specific object timing — for example title first, chart second, annotation last — use the optional `animations.json` sidecar. The SVG remains static visual source; the sidecar only controls PPTX export behavior.
 
-Run the standalone [`customize-animations`](../workflows/customize-animations.md) workflow when the user asks to tune animation order, effects, timing, or object-level reveals.
+Run the [`customize-animations`](../workflows/stages/customize-animations.md) post-processing stage when the user asks to tune animation order, effects, timing, or object-level reveals.
 
 ```bash
 # Build an editable scaffold from real top-level <g id> anchors
@@ -66,6 +66,12 @@ Rules:
 - `--animation none` overrides the sidecar and disables all per-element animation.
 - An explicit sidecar group may override the legacy chrome-name heuristic, but it cannot override `data-pptx-layer` or an explicit static role/placeholder marker.
 - Unknown effects, modes, or triggers and invalid numeric/order fields fail validation; no fallback effect is substituted.
+
+**Declared inheritance for omitted sidecar fields**:
+
+- The whole `animations.json` artifact is optional. When absent, normal exporter CLI resolution applies.
+- In any existing sparse sidecar, an omitted slide transition/animation property inherits the matching `defaults.transition` / `defaults.animation` property; when that defaults property is also absent, normal exporter CLI resolution applies. Explicit CLI overrides still win. Current authoring writes each slide's complete transition and animation blocks.
+- A group override inherits `effect` and `duration` from its resolved slide animation; omitted `order` and `delay` use the exporter's sidecar resolution.
 
 ---
 
@@ -142,9 +148,10 @@ Flags:
 - `--animation-trigger` — Start mode (matches PowerPoint): `on-click`, `with-previous`, or `after-previous` (default).
 - `--animation-duration` — per-element entrance seconds, default `0.4`.
 - `--animation-stagger` — gap between elements in `after-previous` mode (seconds, default `0.5`). Ignored otherwise.
-- `--animation-config` — sidecar path. Default: `<project>/animations.json` when present.
+- `--animation-config` — explicit sidecar path. Narrated export defaults to `<project>/narration_animations.json`; other export defaults to `<project>/animations.json` when present.
+- `--no-animations` — ignore animation sidecars and disable both object animations and page-transition motion. Narration audio and recorded slide-advance timing remain active.
 
-> Note: `--recorded-narration` rejects `on-click`; use `after-previous` or `with-previous` for video-ready narrated decks.
+> Note: `--recorded-narration` rejects `on-click`; use its default `narration_animations.json`, pass `--animation-config animations.json` for the canonical presentation animation, or pass `--no-animations`.
 
 ---
 
@@ -152,7 +159,7 @@ Flags:
 
 Per-element animations are anchored on **top-level `<g id="...">` content groups** in the SVG (e.g. `<g id="cover-title">`, `<g id="card-1">`). IDs must be unique within the page. One group produces one animation-pane entrance row; whether that row needs a click depends on the selected Start mode. Nested implementation groups may remain anonymous because the sidecar does not target them.
 
-Aim for **3–8 content groups per slide**. This is also the granularity PowerPoint uses for group-select / group-move, so it improves editing ergonomics regardless of animation.
+Use one content group per logical page unit. This is also the granularity PowerPoint uses for group-select / group-move, so semantic grouping improves editing ergonomics regardless of animation; do not split or merge units to hit a target count.
 
 **Chrome groups skip the cascade automatically.** Explicit SVG role and placeholder semantics are authoritative. A group with `data-pptx-layer` or an explicit static role/placeholder marker can never animate. For marker-free legacy SVGs only, top-level groups whose id tokens look like page chrome (background, header/footer, decorations, watermark, page number, nav, logo, dividing rule) are excluded and appear with the slide. An explicit `animations.json` group entry may override this id-name heuristic, but never an explicit structural marker. Examples that auto-skip by legacy id: `<g id="background">`, `<g id="bg-texture">`, `<g id="cover-footer">`, `<g id="p03-header">`, `<g id="bottom-decor">`, `<g id="watermark">`, `<g id="nav">`, `<g id="logo-area">`, `<g id="column-rule">`. Examples that still animate: `<g id="card-1">`, `<g id="cover-title">`, `<g id="step-discover">`, `<g id="timeline-track">`. Do not strip the `<g>` wrapper to avoid animation — keep it for PowerPoint group selection and use `effect: none` when the content should remain static.
 
@@ -161,7 +168,7 @@ Aim for **3–8 content groups per slide**. This is also the granularity PowerPo
 - ≤ 8 visible top-level primitives → each becomes one anchor (capped to avoid 70+ atom cascades on dense pages).
 - > 8 → animation is skipped on that slide. The slide still renders, just without entrance animation.
 
-Executors should wrap logical sections in `<g id>` regardless of whether you plan to animate. The Executor reference (`skills/ppt-master/references/shared-standards.md`) requires it.
+Executors should wrap logical sections in `<g id>` regardless of whether you plan to animate. [`shared-standards-core.md`](./shared-standards-core.md) requires it.
 
 ---
 
@@ -193,6 +200,9 @@ Narration injection merges audio timing into an existing direct `p:sld/p:timing`
 | Slower transition | `--transition-duration 0.8` |
 | Auto-play | `--auto-advance 5` |
 | Disable element animation | `-a none` |
+| Narrated export with synchronized animation | `--recorded-narration audio` |
+| Narrated export with canonical animation | `--recorded-narration audio --animation-config animations.json` |
+| Narrated export without animation motion | `--recorded-narration audio --no-animations` |
 | Switch to on-click trigger | `-a auto --animation-trigger on-click` |
 | Use a single effect instead of auto | `--animation fade` |
 | All groups animate together | `-a auto --animation-trigger with-previous` |

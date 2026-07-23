@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "skill_id": "57c96be9-6a84-4645-b7a9-e60b91869510",
+  "path": "baoyu-slide-deck",
+  "path_key": "baoyu-slide-deck",
+  "enabled": true,
+  "tags": [],
+  "source": {
+    "type": "skillssh",
+    "ref": "jimliu/baoyu-skills/baoyu-slide-deck",
+    "subpath": "skills/baoyu-slide-deck",
+    "branch": null
+  }
+}
